@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@import "tailwindcss";
+
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+:root {
+  --app-bg: #f5f5f5;
+  --app-text: #111827;
+  --card-bg: #ffffff;
+  --card-border: #e5e7eb;
+  --card-muted: #ffffff;
+  --card-hover: #f5f5f5;
+}
+
+[data-theme="dark"] {
+  --app-bg: #050816;
+  --app-text: #ffffff;
+  --card-bg: #0b1020;
+  --card-border: #1f2937;
+  --card-muted: #9ca3af;
+  --card-hover: #111827;
+}
+
+.page-root {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+
+.text-root {
+  color: var(--app-text);
+}
+
+.card-root {
+  background-color: var(--card-bg);
+  border-color: var(--card-border);
+}
+
+[data-theme="dark"] .page-root {
+  background-color: var(--app-bg);
+}
+
+[data-theme="dark"] .text-root {
+  color: var(--app-text);
+}
+
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+:root,
+html,
+body,
+#root,
+.ant,
+.ant-btn,
+.ant-modal,
+.ant-modal-content,
+.ant-modal-header,
+.ant-modal-title,
+.ant-dropdown,
+.ant-dropdown-menu,
+.ant-menu,
+.ant-menu-item,
+.ant-select-selector,
+.ant-select-selection-item,
+.ant-input,
+.ant-typography,
+.ant-form-item-label,
+.ant-checkbox-wrapper>label,
+.ant-upload,
+.ant-tag,
+.ant-tag-checkable,
+.ant-tag-checkable-checked,
+.ant-badge,
+.ant-drawer,
+/* --- Antd Table --- */
+.ant-table,
+.ant-table-wrapper,
+.ant-table-container,
+.ant-table-title,
+.ant-table-footer,
+.ant-table-thead,
+.ant-table-tbody,
+.ant-table-thead>tr>th,
+.ant-table-tbody>tr>td,
+.ant-table-cell,
+.ant-table-filter-trigger,
+.ant-table-filter-dropdown,
+.ant-table-pagination,
+.ant-pagination {
+  font-family: 'Kanit', sans-serif !important;
+}
+
+.ant-table {
+  * {
+    font-family: 'Kanit', sans-serif !important;
+  }
+}
+
+.navbar-dropdown {
+  background-color: #08a4b8 !important;
+  border-radius: 8px;
+  border: 2px solid #005f6b;
+}
+
+
+.navbar-dropdown .ant-menu-item,
+.navbar-dropdown .ant-menu-item a {
+  color: white !important;
+}
+
+.navbar-dropdown .ant-menu-item:hover {
+  background-color: #08a4b8 !important;
+}
+
+.navbar-dropdown,
+.navbar-dropdown .ant-menu-item,
+.navbar-dropdown .ant-menu-item a {
+  font-family: 'Kanit', sans-serif !important;
+}
+
+.ant-btn,
+.ant-dropdown,
+.ant-menu-item,
+.ant-select-selector,
+.ant-input,
+.ant-select-selection-item,
+.ant-select-selection-item:hover,
+.ant-select-selection-item:focus,
+.ant-select-selection-item:active,
+.ant-modal-content {
+  font-family: 'Kanit', sans-serif !important;
+}
+
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+
+
+/* ============================================================================= */
+
+.status-toggle-root {
+  border: 1px solid var(--card-border);
+  background-color: var(--card-bg);
+}
+
+.status-toggle-btn {
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  border-left: 1px solid var(--card-border);
+  background-color: transparent;
+  color: var(--app-text);
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.status-toggle-btn:first-child {
+  border-left: none;
+}
+
+/* ปุ่มที่ไม่ active เวลา hover */
+.status-toggle-btn:not(.status-toggle-btn--active):hover {
+  background-color: var(--card-hover);
+}
+
+/* สีตอน active */
+.status-toggle-btn--green.status-toggle-btn--active {
+  background-color: #22c55e;
+  color: #ffffff;
+  border-color: #22c55e;
+}
+
+.status-toggle-btn--orange.status-toggle-btn--active {
+  background-color: #f97316;
+  color: #ffffff;
+  border-color: #f97316;
+}
+
+.status-toggle-btn--red.status-toggle-btn--active {
+  background-color: #ef4444;
+  color: #ffffff; 
+  border-color: #ef4444;
+}
+
+
+/* บังคับ background ของ MUI table ทั้งก้อน */
+.card-root .MuiTable-root,
+.card-root .MuiTableBody-root,
+.card-root .MuiTableHead-root,
+.card-root .MuiTableRow-root,
+.card-root .MuiTableCell-root,
+.card-root .MuiTableContainer-root {
+  background-color: var(--card-bg) !important;
+  color: var(--app-text);
+  border-color: var(--card-border);
+}
+
+

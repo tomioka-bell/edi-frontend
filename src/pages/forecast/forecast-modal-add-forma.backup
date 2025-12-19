@@ -1,0 +1,275 @@
+import { useEffect, useState } from "react";
+import {
+  Modal,
+  Form,
+  Select,
+  Button,
+  message,
+  Spin,
+  Upload,
+  Radio,
+  DatePicker,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Dayjs } from "dayjs";
+import axiosInstance from "../../utils/api-microservices";
+import toast from "react-hot-toast";
+
+const { Option } = Select;
+const { RangePicker } = DatePicker;
+
+interface ForecastModalAddProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onCreated?: (result?: any) => void;
+  onUpdated?: () => void;
+}
+
+type PdfOption = "attach" | "generate" | undefined;
+
+export default function ForecastModalAdd({
+  isOpen,
+  onClose,
+  onCreated,
+}: ForecastModalAddProps) {
+  const [loading, setLoading] = useState(false);
+
+  const [companies, setCompanies] = useState<
+    Array<{ company_code: string; customer_name: string }>
+  >([]);
+  const [forecastNumbers, setForecastNumbers] = useState<
+    Array<{ forecast_number: string }>
+  >([]);
+
+  const [selectedCompany, setSelectedCompany] = useState<string | undefined>(
+    undefined
+  );
+  const [selectedForecastNumber, setSelectedForecastNumber] = useState<
+    string | undefined
+  >(undefined);
+
+  const [pdfOption, setPdfOption] = useState<PdfOption>(undefined);
+
+  const [periodFrom, setPeriodFrom] = useState<Dayjs | null>(null);
+  const [periodTo, setPeriodTo] = useState<Dayjs | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    setSelectedCompany(undefined);
+    setSelectedForecastNumber(undefined);
+    setForecastNumbers([]);
+    setPdfOption(undefined);
+    setPeriodFrom(null);
+    setPeriodTo(null);
+
+    setLoading(true);
+    axiosInstance
+      .get(`/api/forecast/get-distinct-forecast`)
+      .then((res) => {
+        setCompanies(res.data?.forecast_distinct || []);
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error("Error loading companies");
+      })
+      .finally(() => setLoading(false));
+  }, [isOpen]);
+
+  useEffect(() => {
+    setForecastNumbers([]);
+    setSelectedForecastNumber(undefined);
+
+    if (!selectedCompany) return;
+
+    setLoading(true);
+    axiosInstance
+      .get(`/api/forecast/get-forecast-number`, {
+        params: { company_code: selectedCompany },
+      })
+      .then((res) => {
+        setForecastNumbers(res.data?.forecast_number || []);
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error("Error loading forecast number");
+      })
+      .finally(() => setLoading(false));
+  }, [selectedCompany]);
+
+  const handleSave = async () => {
+    if (!selectedCompany || !selectedForecastNumber) {
+      message.warning("Please select Company and Forecast number before saving");
+      return;
+    }
+
+    const periodFromStr = periodFrom ? periodFrom.format("YYYY-MM-DD") : undefined;
+    const periodToStr = periodTo ? periodTo.format("YYYY-MM-DD") : undefined;
+
+    setLoading(true);
+    try {
+      const res = await axiosInstance.get(`/api/forecast/get-forecast-view`, {
+        params: {
+          forecast_number: selectedForecastNumber,
+          company_code: selectedCompany,
+          period_from: periodFromStr,
+          period_to: periodToStr,
+        },
+      });
+
+      toast.success("View forecast success");
+      console.log("forecast view result", res.data);
+      console.log("PDF option:", pdfOption);
+      console.log("Period:", { periodFrom: periodFromStr, periodTo: periodToStr });
+
+      onCreated?.(res.data);
+      onClose();
+    } catch (err) {
+      console.error(err);
+      toast.error("Error occurred while retrieving data.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCancel = () => {
+    setSelectedCompany(undefined);
+    setSelectedForecastNumber(undefined);
+    setForecastNumbers([]);
+    setPdfOption(undefined);
+    setPeriodFrom(null);
+    setPeriodTo(null);
+    onClose();
+  };
+
+  return (
+    <Modal
+      open={isOpen}
+      onCancel={handleCancel}
+      footer={null}
+      title={<span className="text-lg font-semibold">Add Forecast</span>}
+      destroyOnClose
+      width={750}
+      centered
+    >
+      <Spin spinning={loading}>
+        <Form layout="vertical">
+          <Form.Item label="Company">
+            <Select
+              showSearch
+              placeholder="Search Company..."
+              optionFilterProp="children"
+              value={selectedCompany}
+              onChange={(val) => setSelectedCompany(val)}
+              filterOption={(input, option) => {
+                const text = String(option?.children || "").toLowerCase();
+                return text.includes(String(input).toLowerCase());
+              }}
+              allowClear
+            >
+              {companies.map((c) => (
+                <Option key={c.company_code} value={c.company_code}>
+                  {c.company_code} - {c.customer_name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="Forecast Number">
+            <Select
+              showSearch
+              placeholder={
+                selectedCompany
+                  ? "Search Forecast number..."
+                  : "Please select Company first"
+              }
+              optionFilterProp="children"
+              value={selectedForecastNumber}
+              onChange={(val) => setSelectedForecastNumber(val)}
+              filterOption={(input, option) => {
+                const text = String(option?.children || "").toLowerCase();
+                return text.includes(String(input).toLowerCase());
+              }}
+              allowClear
+              disabled={!selectedCompany}
+            >
+              {forecastNumbers.map((f) => (
+                <Option key={f.forecast_number} value={f.forecast_number}>
+                  {f.forecast_number}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+
+          {/* ✅ ปฏิทิน period_from / period_to */}
+          <Form.Item label="Period From - To">
+            <RangePicker
+              value={
+                periodFrom && periodTo ? [periodFrom, periodTo] : null
+              }
+              onChange={(dates) => {
+                if (!dates || dates.length) {
+                  setPeriodFrom(null);
+                  setPeriodTo(null);
+                } else {
+                  setPeriodFrom(dates[0]);
+                  setPeriodTo(dates[1]);
+                }
+              }}
+              format="YYYY-MM-DD"
+              style={{ width: "100%" }}
+            />
+          </Form.Item>
+
+          <Form.Item label="PDF Option">
+            <Radio.Group
+              value={pdfOption}
+              onChange={(e) => setPdfOption(e.target.value)}
+              buttonStyle="solid"
+            >
+              <Radio.Button value="attach">Upload PDF</Radio.Button>
+              <Radio.Button value="generate">Generate PDF</Radio.Button>
+            </Radio.Group>
+          </Form.Item>
+
+          {pdfOption === "attach" && (
+            <Form.Item label="Upload PDF">
+              <Upload
+                beforeUpload={() => false}
+                maxCount={1}
+                accept="application/pdf"
+              >
+                <Button icon={<UploadOutlined />}>Upload PDF</Button>
+              </Upload>
+            </Form.Item>
+          )}
+
+          {pdfOption === "generate" && (
+            <Form.Item>
+              <Button
+                type="dashed"
+                onClick={() => {
+                  message.info("Generate PDF (Mock)");
+                  console.log("Generate PDF clicked");
+                }}
+              >
+                Generate PDF (Mock)
+              </Button>
+            </Form.Item>
+          )}
+
+          <Form.Item>
+            <div
+              style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}
+            >
+              <Button onClick={handleCancel}>Cancel</Button>
+              <Button type="primary" onClick={handleSave} loading={loading}>
+                Save
+              </Button>
+            </div>
+          </Form.Item>
+        </Form>
+      </Spin>
+    </Modal>
+  );
+}
