@@ -179,12 +179,6 @@ export default function ForecastPage() {
     downloadFile(url, filename);
   };
   
-
-
-
-
-
-  
   const columns = React.useMemo<MRT_ColumnDef<ForecastRow>[]>(() => {
     return [
       {
@@ -275,6 +269,7 @@ export default function ForecastPage() {
                   group inline-flex items-center gap-1.5
                   rounded-lg px-3 py-1.5 text-xs font-medium
                   border transition-all duration-200
+                  text-root
                   focus:outline-none focus:ring-2 focus:ring-[#08a4b8]/30
                   ${hasFile
                                 ? "border-[#08a4b8]/40 text-[#08a4b8] bg-white shadow-sm hover:bg-[#08a4b8]/10 hover:shadow-md active:scale-[0.97]"
