@@ -265,15 +265,15 @@ export default function OrdersPage() {
                   handlePreviewFile(orig);
                 }}
                 className={`
-                            group inline-flex items-center gap-1.5
-                            rounded-lg px-3 py-1.5 text-xs font-medium
-                            border transition-all duration-200
-                            focus:outline-none focus:ring-2 focus:ring-[#08a4b8]/30
-                            ${hasFile
-                    ? "border-[#08a4b8]/40 text-[#08a4b8] bg-white shadow-sm hover:bg-[#08a4b8]/10 hover:shadow-md active:scale-[0.97]"
-                    : "border-gray-200 text-gray-300 bg-gray-50 cursor-not-allowed"
+                        group inline-flex items-center gap-1.5
+                        rounded-lg px-3 py-1.5 text-xs font-medium
+                        border transition-all duration-200
+                        focus:outline-none focus:ring-2 focus:ring-[#08a4b8]/30
+                        ${hasFile
+                    ? "border-[#08a4b8]/40 text-[#08a4b8] bg-(--card-bg shadow-sm hover:bg-[#08a4b8]/10 hover:shadow-md active:scale-[0.97]"
+                    : "border-(--card-border) text-(--card-muted) bg-(--card-hover) cursor-not-allowed"
                   }
-                          `}
+                      `}
                 title={hasFile ? "Preview file" : "No file available"}
               >
                 <FiEye className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
@@ -290,15 +290,15 @@ export default function OrdersPage() {
                   handleDownloadFile(orig);
                 }}
                 className={`
-                          group inline-flex items-center gap-1.5
-                          rounded-lg px-3 py-1.5 text-xs font-medium
-                          border transition-all duration-200
-                          focus:outline-none focus:ring-2 focus:ring-gray-300
-                          ${hasFile
-                    ? "border-gray-300 text-gray-600 bg-white shadow-sm hover:bg-gray-100 hover:shadow-md active:scale-[0.97]"
-                    : "border-gray-200 text-gray-300 bg-gray-50 cursor-not-allowed"
+                      group inline-flex items-center gap-1.5
+                      rounded-lg px-3 py-1.5 text-xs font-medium
+                      border transition-all duration-200
+                      focus:outline-none focus:ring-2 focus:ring-gray-300
+                      ${hasFile
+                    ? "border-(--card-border) text-(--app-text) bg-(--card-bg) shadow-sm hover:bg-(--card-hover) hover:shadow-md active:scale-[0.97]"
+                    : "border-(--card-border) text-(--card-muted) bg-(--card-hover) cursor-not-allowed"
                   }
-                        `}
+                    `}
                 title={hasFile ? "Download file" : "No file available"}
               >
                 <FiDownload className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
@@ -404,14 +404,14 @@ export default function OrdersPage() {
               </div>
             </div>
 
-              {user?.source_system === "APP_EMPLOYEE" && (
-            <button style={{ color: "white", fontSize: "14px" }} onClick={() => setIsModalAddOpen(true)} className="flex items-center gap-2 bg-[#08a4b8] hover:bg-[#0893a5]
+            {user?.source_system === "APP_EMPLOYEE" && (
+              <button style={{ color: "white", fontSize: "14px" }} onClick={() => setIsModalAddOpen(true)} className="flex items-center gap-2 bg-[#08a4b8] hover:bg-[#0893a5]
           text-sm font-semibold text-white px-5 py-2.5 rounded-full shadow-md
           hover:shadow-lg active:scale-[0.97] transition-all duration-200">
-              <GrAdd className="w-4 h-4 hover:animate-spin" />
-              Add Order
-            </button>
-               )}
+                <GrAdd className="w-4 h-4 hover:animate-spin" />
+                Add Order
+              </button>
+            )}
 
           </div>
           <MaterialReactTable<OrderRow & MRT_RowData>

@@ -269,11 +269,10 @@ export default function ForecastPage() {
                   group inline-flex items-center gap-1.5
                   rounded-lg px-3 py-1.5 text-xs font-medium
                   border transition-all duration-200
-                  text-root
                   focus:outline-none focus:ring-2 focus:ring-[#08a4b8]/30
                   ${hasFile
-                                ? "border-[#08a4b8]/40 text-[#08a4b8] bg-white shadow-sm hover:bg-[#08a4b8]/10 hover:shadow-md active:scale-[0.97]"
-                                : "border-gray-200 text-gray-300 bg-gray-50 cursor-not-allowed"
+                                ? "border-[#08a4b8]/40 text-[#08a4b8] bg-(--card-bg shadow-sm hover:bg-[#08a4b8]/10 hover:shadow-md active:scale-[0.97]"
+                                : "border-(--card-border) text-(--card-muted) bg-(--card-hover) cursor-not-allowed"
                               }
                 `}
                 title={hasFile ? "Preview file" : "No file available"}
@@ -297,12 +296,12 @@ export default function ForecastPage() {
                 border transition-all duration-200
                 focus:outline-none focus:ring-2 focus:ring-gray-300
                 ${hasFile
-                    ? "border-gray-300 text-gray-600 bg-white shadow-sm hover:bg-gray-100 hover:shadow-md active:scale-[0.97]"
-                    : "border-gray-200 text-gray-300 bg-gray-50 cursor-not-allowed"
+                    ? "border-(--card-border) text-(--app-text) bg-(--card-bg) shadow-sm hover:bg-(--card-hover) hover:shadow-md active:scale-[0.97]"
+                    : "border-(--card-border) text-(--card-muted) bg-(--card-hover) cursor-not-allowed"
                   }
               `}
                 title={hasFile ? "Download file" : "No file available"}
-              >
+              >   
                 <FiDownload className="h-3.5 w-3.5 transition-transform group-hover:scale-110" />
                 <span>Download</span>
               </button>

@@ -329,6 +329,7 @@ export default function LoginPage() {
                         {step === "otp" && (
                             <div className="flex justify-start">
                                 <button
+                                style={{color: "black"}}
                                     type="button"
                                     onClick={() => setStep("credentials")}
                                     className="
@@ -382,8 +383,9 @@ export default function LoginPage() {
                                 <input
                                     type="text"
                                     value={identifier}
+                                     style={{color: "black"}}
                                     onChange={(e) => setIdentifier(e.target.value)}
-                                    className="w-full px-4 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/60 focus:border-cyan-500/60"
+                                    className="w-full px-4 py-2.5 bg-white border border-neutral-300 rounded-lg text-root placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/60 focus:border-cyan-500/60"
                                     placeholder="Email or Username"
                                     required
                                 />
@@ -393,6 +395,7 @@ export default function LoginPage() {
                                 <input
                                     type="password"
                                     value={password}
+                                    style={{color: "black"}}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className="w-full px-4 py-2.5 bg-white border border-neutral-300 rounded-lg text-neutral-900 placeholder-neutral-400 focus:outline-none focus:ring-2 focus:ring-cyan-500/60 focus:border-cyan-500/60"
                                     placeholder="••••••••"
@@ -451,6 +454,7 @@ export default function LoginPage() {
                                         key={i}
                                         ref={(el) => { inputsRef.current[i] = el; }}
                                         type="text"
+                                         style={{color: "black"}}
                                         inputMode="numeric"
                                         pattern="[0-9]*"
                                         maxLength={6}
