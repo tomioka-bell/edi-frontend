@@ -1,31 +1,7 @@
-import { createContext, useContext, useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import Cookies from "js-cookie";
 import apiBaseClient from "../utils/api-base-client";
-
-type User = {
-  edi_principal_id: string;
-  external_id: string;
-  username: string;
-  display_name?: string;
-  email?: string;
-  role_name: string;
-  profile: string;
-  group: string;
-  source_system: string;
-};
-
-type Ctx = {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-  refresh: () => Promise<void>;
-  logout: () => void;
-  hasRole: (r: string) => boolean;
-  hasAnyRole: (...r: string[]) => boolean;
-  getInitials: (u?: User | null) => string;
-};
-
-const UserContext = createContext<Ctx | null>(null);
+import { UserContext, type User } from "./user-context";
 
 export function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser]   = useState<User | null>(null);
@@ -88,9 +64,3 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     </UserContext.Provider>
   );
 }
-
-export const useUser = () => {
-  const ctx = useContext(UserContext);
-  if (!ctx) throw new Error("useUser must be used within <UserProvider>");
-  return ctx;
-};

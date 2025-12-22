@@ -59,7 +59,7 @@ export default function StatusSummaryData({ vendorCode }: StatusSummaryDataProps
                 {[...Array(4)].map((_, i) => (
                     <div
                         key={i}
-                        className="h-28 animate-pulse rounded-3xl bg-gray-100 dark:bg-gray-800"
+                        className="h-28 animate-pulse rounded-3xl bg-gray-100"
                     />
                 ))}
             </div>

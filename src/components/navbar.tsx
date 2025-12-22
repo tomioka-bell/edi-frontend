@@ -6,12 +6,12 @@ import {
   LogoutOutlined,
 
 } from "@ant-design/icons";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../contexts/useUserHook";
 import { buildImageURL } from "../utils/get-image";
 import { RiShieldUserLine } from "react-icons/ri";
 import { GoShareAndroid } from "react-icons/go";
 import { FiSun, FiMoon } from "react-icons/fi";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../contexts/useThemeHook";
 import ModalNotification from "./modal-notification";
 
 export default function Navbar() {
@@ -27,7 +27,6 @@ export default function Navbar() {
     Cookies.remove("auth_token");
     message.success("Log out successfully");
     logout();
-
     window.location.replace(`${window.location.origin}/${lang}/login`);
   };
 
@@ -36,7 +35,7 @@ export default function Navbar() {
 
   const menu = (
     <Menu
-      className="min-w-[200px] bg-white rounded-xl shadow-2xl"
+      className="min-w-50 bg-white rounded-xl shadow-2xl"
       items={[
         {
           key: "role",
@@ -84,7 +83,7 @@ export default function Navbar() {
 
   return (
     <div className="sticky top-0 z-50 bg-white/10 backdrop-blur-lg  px-6 py-0 h-20 shadow-md">
-      <div className="max-w-[1920px] mx-auto h-full flex items-center justify-between">
+      <div className="max-w-480 mx-auto h-full flex items-center justify-between">
 
         {/* ฝั่งซ้าย: แสดง group */}
         <div className="flex items-center gap-6">
@@ -174,7 +173,7 @@ export default function Navbar() {
                       {user
                         ? `${(user.display_name ?? "").trim()}`.trim() ||
                         user.username
-                        : "ผู้ดูแลระบบ"}
+                        : "—"}
                     </span>
                     <span className="text-xs text-gray-500 font-medium">
                       {user?.username ?? "—"}

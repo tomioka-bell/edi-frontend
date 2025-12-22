@@ -1,22 +1,11 @@
-// src/contexts/ThemeContext.tsx
 import React, {
-  createContext,
-  useContext,
   useEffect,
   useState,
 } from "react";
 import { ConfigProvider, theme as antdTheme } from "antd";
+import { ThemeContext, type ThemeMode } from "./theme-context";
 
 const { darkAlgorithm, defaultAlgorithm } = antdTheme;
-
-type ThemeMode = "light" | "dark";
-
-interface ThemeContextValue {
-  mode: ThemeMode;
-  toggleTheme: () => void;
-}
-
-const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [mode, setMode] = useState<ThemeMode>("light");
@@ -63,12 +52,4 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       </ConfigProvider>
     </ThemeContext.Provider>
   );
-};
-
-export const useTheme = () => {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) {
-    throw new Error("useTheme must be used within ThemeProvider");
-  }
-  return ctx;
 };

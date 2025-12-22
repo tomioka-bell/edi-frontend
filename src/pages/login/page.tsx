@@ -6,7 +6,7 @@ import logo_company from "../../images/logo_header.svg";
 import toast, { Toaster } from "react-hot-toast";
 import withLang from "../../utils/normalize-lang";
 import { API_BASE } from "../../utils/api-base";
-import bgVideo from "../../images/video/113385-697718118.mp4";
+import bgVideo from "../../images/video/136959-765457947.mp4";
 import { Radio } from "antd";
 import edilogo from "../../images/edi-logo.png";
 import { IoIosArrowBack } from "react-icons/io";
@@ -274,7 +274,7 @@ export default function LoginPage() {
             </video>
             <Toaster position="top-right" />
 
-            <div className="relative w-full max-w-[800px] min-h-[600px] grid grid-cols-1 md:grid-cols-2 rounded-2xl border border-neutral-200 shadow-2xl overflow-hidden bg-white/85">
+            <div className="relative w-full max-w-200 min-h-150 grid grid-cols-1 md:grid-cols-2 rounded-2xl border border-neutral-200 shadow-2xl overflow-hidden bg-white/85">
                 <div className="absolute top-[10%] left-1/2 -translate-x-1/2 w-[1.4px] h-[80%] bg-[#08a4b8]" />
 
                 {/* ซ้าย: โลโก้ */}
@@ -295,7 +295,6 @@ export default function LoginPage() {
                             alt="PROSPIRA Logo"
                             className="w-56 h-auto object-contain drop-shadow-sm"
                         />
-
                         {/* Divider (optional แต่ช่วยให้ดูพรีเมียม) */}
                         <div className="h-px w-24 bg-gray-300" />
 
@@ -318,14 +317,13 @@ export default function LoginPage() {
                                 Platform
                             </p>
                         </div>
-
                     </div>
                 </div>
 
 
                 {/* ขวา: ฟอร์ม */}
                 <div className="relative p-8 md:p-10">
-                    <div className="mb-6 text-center pt-[68px]">
+                    <div className="mb-6 text-center pt-16">
                         {step === "otp" && (
                             <div className="flex justify-start">
                                 <button
@@ -364,7 +362,7 @@ export default function LoginPage() {
                         )}
 
                         {step === "otp" && (
-                            <hr className="mt-2 mb-8 border-neutral-200 w-[300px] mx-auto" />
+                            <hr className="mt-2 mb-8 border-neutral-200 w-75 mx-auto" />
                         )}
 
                         <h2 className="text-2xl font-bold text-[#08a4b8]">
@@ -429,21 +427,30 @@ export default function LoginPage() {
                                     type="submit"
                                     disabled={loading}
                                     className="
-                                    px-34 py-2.5
+                                    w-full px-6 py-3
                                     bg-linear-to-r from-[#08a4b8] to-cyan-500
-                                    text-white font-semibold
-                                    rounded-lg shadow
-                                    transition-transform duration-200 ease-out
-                                    transform
-                                    hover:scale-[1.02]
-                                    hover:opacity-95
-                                    disabled:opacity-70
+                                    text-white font-semibold text-base
+                                    rounded-xl shadow-lg
+                                    transition-all duration-300 ease-out
+                                    hover:shadow-2xl hover:shadow-cyan-500/30
+                                    hover:scale-105
+                                    active:scale-95
+                                    disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:scale-100
+                                    focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:ring-offset-2
                                 "
                                 >
-                                    {loading ? "Loading..." : "Login"}
+                                    {loading ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <svg className="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                            Loading...
+                                        </span>
+                                    ) : (
+                                        "Log In"
+                                    )}
                                 </button>
-
-
                             </div>
                         </form>
                     ) : (
@@ -506,7 +513,7 @@ export default function LoginPage() {
                     ) : null}
 
 
-                    <hr className="my-6 border-[#08a4b8]/50 w-[300px] mx-auto" />
+                    <hr className="my-6 border-[#08a4b8]/50 w-75 mx-auto" />
 
                     <p className="text-center text-[#08a4b8] text-xs mt-8">
                         © {new Date().getFullYear()} Prospira (Thailand) Co., Ltd.

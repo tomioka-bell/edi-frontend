@@ -7,10 +7,10 @@ import {
 import { TbUsersGroup } from "react-icons/tb";
 import logo_company from "../images/logo_header.svg";
 import logo_companywhite from "../images/logo_footer.svg";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../contexts/useUserHook";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { VscGraph } from "react-icons/vsc";
-import { useTheme } from "../contexts/ThemeContext";
+import { useTheme } from "../contexts/useThemeHook";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 

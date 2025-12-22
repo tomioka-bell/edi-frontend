@@ -68,8 +68,9 @@ export default function ResetPasswordPage() {
 
       setMessage("Password updated successfully. You can now sign in.");
       setTimeout(() => nav("/login"), 1500);
-    } catch (err: any) {
-      setError(err?.message || "Something went wrong");
+    } catch (err: unknown) {
+      const error = err as { message?: string };
+      setError(error?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }

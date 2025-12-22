@@ -18,7 +18,8 @@ import OrderModalAdd from "./order-modal-add";
 import { buildImageURL } from "../../utils/get-image";
 import { downloadFile } from "../../utils/download-file";
 import { Modal, Select, DatePicker } from "antd";
-import { useUser } from "../../contexts/UserContext";
+import dayjs from "dayjs";
+import { useUser } from "../../contexts/useUserHook";
 import { HiOutlineDocumentText } from "react-icons/hi2";
 import StatusSummaryData from "./status-summary-data";
 import apiBaseClient from "../../utils/api-base-client";
@@ -366,7 +367,7 @@ export default function OrdersPage() {
                     onChange={(value) => setVendorFilter(value || "")}
                     options={rows
                       .map(row => row.vendor_code)
-                      .filter((code, index, self) => code && self.indexOf(code) === index)
+                      .filter((code, index, self) => code && self.indexOf(code) === index) 
                       .sort()
                       .map(code => ({ label: code, value: code }))
                     }
@@ -377,6 +378,7 @@ export default function OrdersPage() {
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700">Period:</label>
                 <DatePicker.RangePicker
+                  key={`daterange-${dateRange[0]}-${dateRange[1]}`}
                   placeholder={["From", "To"]}
                   onChange={(dates) => {
                     if (dates && dates[0] && dates[1]) {
@@ -385,6 +387,7 @@ export default function OrdersPage() {
                       setDateRange([null, null]);
                     }
                   }}
+                  value={dateRange[0] && dateRange[1] ? [dayjs(dateRange[0]), dayjs(dateRange[1])] : null}
                   style={{ width: 280 }}
                 />
               </div>
@@ -397,7 +400,7 @@ export default function OrdersPage() {
                     setGlobalFilter("");
                     setStatusFilter("");
                     setVendorFilter("");
-                    setDateRange([null, null]);
+                    setDateRange([null, null]); 
                   }}
                   className="w-6 h-6 cursor-pointer transition-transform duration-200 ease-in-out hover:scale-110 hover:rotate-12"
                 />

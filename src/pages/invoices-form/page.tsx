@@ -14,7 +14,7 @@ import InvoicesStatusLogs from "./invoice-status-logs";
 import InvoiceConfirmModal from "./invoice-confirm-modal";
 import InvoicesTable from "./invoice-table";
 import ViewFile from "./view-file";
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/useUserHook";
 import InvoicesVersionAdd from "./invoice-version-add";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 

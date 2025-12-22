@@ -1,7 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useEffect } from "react";
 import { toast } from "react-hot-toast";
-import { useUser } from "../contexts/UserContext";
+import { useUser } from "../contexts/useUserHook";
 import FancyLoader from "../utils/fancy-loader";
 
 type RequireRoleProps = {

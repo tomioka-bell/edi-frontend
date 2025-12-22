@@ -1,6 +1,6 @@
 import Layout from '../../layouts/layout';
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/useUserHook";
 import UserList from "./user-list";
 
 export default function UserPage() {
@@ -20,7 +20,7 @@ export default function UserPage() {
         <h1 className="text-2xl ml-4 font-semibold text-root">User Management</h1>
       </div>
 
-      <div className="card-root rounded-lg shadow-sm p-4">
+      <div className="">
         {isEmployee && (
           <UserList />
         )}

@@ -13,7 +13,7 @@ export default function VendorsPage() {
 
                 <h1 className="text-2xl ml-4 font-semibold text-root">Vendors</h1>
             </div>
-            <div className="card-root rounded-lg shadow-sm py-4">
+            <div>
                 <VendorData />
             </div>
         </Layout>

@@ -31,8 +31,9 @@ export default function ForgotPasswordPage() {
     try {
       await axios.post(`${API}/api/user/request-password-reset`, { email });
       toast.success("If this email exists, the system will automatically send a reset link.");
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || "Unable to send request";
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      const msg = error?.response?.data?.message || "Unable to send request";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -51,8 +52,9 @@ export default function ForgotPasswordPage() {
         new_password: password,
       });
       toast.success("Password reset successfully");
-    } catch (err: any) {
-      const msg = err?.response?.data?.message || "Unable to set a new password";
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      const msg = error?.response?.data?.message || "Unable to set a new password";
       toast.error(msg);
     } finally {
       setLoading(false);
@@ -162,7 +164,7 @@ export default function ForgotPasswordPage() {
            <img 
             src={wrongPasswordImg} 
             alt="Wrong Password" 
-            className="absolute -top-8 left-0 w-[74px] h-[74px]" 
+            className="absolute -top-8 left-0 w-18.5 h-18.5" 
           />
       </div>
     </div>

@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
 
   useEffect(() => {
-    const msg = (location.state as any)?.toast;
+    const msg = (location.state as { toast?: string } | null)?.toast;
     if (msg) {
       if (msg === "unauthorized") {
         toast.error("You do not have permission to access this page.");
@@ -24,7 +24,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex page-root">
       <Toaster position="top-center" reverseOrder={false} />
-
       <Sidebar/>
       <div className="flex-1 min-h-screen">
         <Navbar />

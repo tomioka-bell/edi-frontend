@@ -1,7 +1,7 @@
 import Layout from '../../layouts/layout';
 import { SettingOutlined } from '@ant-design/icons';
 import EmailVendors from './email-vendors';
-import { useUser } from "../../contexts/UserContext";
+import { useUser } from "../../contexts/useUserHook";
 import { useEffect, useState } from "react";
 import apiBaseClient from "../../utils/api-base-client";
 import type { PrincipalUser } from "../../types/principal-user";

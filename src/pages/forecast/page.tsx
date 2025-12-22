@@ -20,7 +20,8 @@ import ForecastModalAdd from "./forecast-modal-add";
 import { buildImageURL } from "../../utils/get-image";
 import { downloadFile } from "../../utils/download-file";
 import { Modal, Select, DatePicker } from "antd";
-import { useUser } from "../../contexts/UserContext";
+import dayjs from "dayjs";
+import { useUser } from "../../contexts/useUserHook";
 import apiBaseClient from "../../utils/api-base-client";
 import StatusSummaryData from "./status-summary-data";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -362,14 +363,16 @@ export default function ForecastPage() {
                   ]}
                 />
               </div>
+
             {user?.source_system === "APP_EMPLOYEE" && (
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700">Vendor:</label>
                 <Select
                   placeholder="Select Vendor"
                   allowClear
-                   showSearch
-                  style={{ width: 300 }}
+                  showSearch
+                  className="text-sm"
+                  style={{ width: 250}}
                   value={vendorFilter || undefined}
                   onChange={(value) => setVendorFilter(value || "")}
                   options={rows
@@ -385,6 +388,7 @@ export default function ForecastPage() {
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700">Period:</label>
                 <DatePicker.RangePicker
+                  key={`daterange-${dateRange[0]}-${dateRange[1]}`}
                   placeholder={["From", "To"]}
                   onChange={(dates) => {
                     if (dates && dates[0] && dates[1]) {
@@ -393,6 +397,7 @@ export default function ForecastPage() {
                       setDateRange([null, null]);
                     }
                   }}
+                  value={dateRange[0] && dateRange[1] ? [dayjs(dateRange[0]), dayjs(dateRange[1])] : null}
                   style={{ width: 280 }}
                 />
               </div>

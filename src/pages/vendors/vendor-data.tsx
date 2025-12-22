@@ -146,7 +146,7 @@ export default function VendorData() {
   ];
 
   return (
-    <div className="card-root w-328 mx-auto rounded-2xl shadow-sm border border-gray-100 bg-white/90">
+    <div className="card-root  mx-auto rounded-2xl shadow-sm border border-gray-100 bg-white/90">
       {/* Header */}
       <div className="border-b border-gray-100 px-6 py-4 flex items-center justify-between bg-linear-to-r from-sky-50 to-blue-100 rounded-t-2xl">
         <div className="flex flex-col gap-1">

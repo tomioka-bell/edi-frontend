@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
+// import { AnimatePresence } from "framer-motion";
 
 import LoginPage from "./pages/login/page";
 import ForecastPage from "./pages/forecast/page";
@@ -22,8 +22,7 @@ function Router() {
   const location = useLocation();
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
-      <Routes location={location} key={location.pathname}>
+      <Routes location={location}>
         <Route path="/" element={<Navigate to="/en" replace />} />
 
         {/* PUBLIC */}
@@ -128,7 +127,6 @@ function Router() {
 
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </AnimatePresence>
   );
 }
 

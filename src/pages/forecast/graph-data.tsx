@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   ComposedChart,
   Bar,
-  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -13,6 +12,7 @@ import {
 import { Select } from "antd";
 import apiBaseClient from "../../utils/api-base-client";
 import StatusRow from "./status-row";
+import "../../css/anime-graph.css"
 
 const { Option } = Select;
 
@@ -44,6 +44,7 @@ type MonthlyStatusItem = {
   new_count: number;
   confirm_count: number;
   reject_count: number;
+  change_count: number;
   approved_count: number;
   total_count: number;
 };
@@ -62,6 +63,7 @@ type MonthlyChartPoint = {
   rejectCount: number;
   approvedCount: number;
   avgConfirmationHours: number;
+  changeCount: number;
 };
 
 type VendorCountResponse = {
@@ -151,6 +153,7 @@ export default function GraphData() {
         confirmCount: m.confirm_count,
         rejectCount: m.reject_count,
         approvedCount: m.approved_count,
+        changeCount: m.change_count,
         avgConfirmationHours: 0,
       }));
 
@@ -196,6 +199,15 @@ export default function GraphData() {
     statusTotals.order.approved_count +
     statusTotals.invoice.approved_count;
 
+  // Calculate total change from monthly data (sum of all months' change_count)
+  const totalChange = monthlyRaw
+    ? [
+        ...(monthlyRaw.forecast ?? []),
+        ...(monthlyRaw.order ?? []),
+        ...(monthlyRaw.invoice ?? []),
+      ].reduce((sum, item) => sum + item.change_count, 0)
+    : 0;
+
   const docTypeLabel: Record<DocType, string> = {
     forecast: "Forecast",
     order: "Order",
@@ -214,7 +226,7 @@ export default function GraphData() {
             {totalAllDocs.toLocaleString()}
           </p>
           <p className="mt-1 text-xs text-emerald-600">
-            from / get-number-count-summary
+            All document types combined
           </p>
         </div>
 
@@ -226,7 +238,7 @@ export default function GraphData() {
             {vendorCount.toLocaleString()}
           </p>
           <p className="mt-1 text-xs text-sky-600">
-            from /count-vendor
+            Currently active in system
           </p>
         </div>
 
@@ -268,37 +280,68 @@ export default function GraphData() {
       {/* Charts area */}
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Monthly transactions (selected doc type) */}
-        <div className="lg:col-span-2 card-root rounded-2xl border p-4 shadow-sm">
-          <div className="mb-3 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-slate-900">
-                Monthly Transactions – {docTypeLabel[docType]}
-              </p>
-              <p className="text-xs text-slate-500">
-                Total & status by month (from /get-monthly-status-summary)
-              </p>
-            </div>
+        <div className="lg:col-span-2 card-root rounded-2xl border p-4 shadow-sm relative overflow-hidden" style={{
+          background: "linear-gradient(135deg, #fafbfc 0%, #f3f7fb 50%, #ecf4f9 100%)"
+        }}>
+          {/* Decorative ring circles background */}
+          <div className="absolute top-0 right-0 w-60 h-60 rounded-full opacity-30 -mr-32 -mt-32 ring-float-1" style={{border: "8px solid rgba(147, 197, 253, 0.4)"}}></div>
+          <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full opacity-25 -ml-24 -mb-24 ring-float-2" style={{border: "6px solid rgba(147, 197, 253, 0.4)"}}></div>
+          <div className="absolute top-1/2 left-1/4 w-40 h-40 rounded-full opacity-20 -ml-20 -mt-20 ring-float-3" style={{border: "5px solid rgba(14, 165, 233, 0.3)"}}></div>
+          
+          {/* Content */}
+          <div className="relative z-10">
+            <div className="mb-3 flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-slate-900">
+                  Monthly Transactions – {docTypeLabel[docType]}
+                </p>
+                <p className="text-xs text-slate-500">
+                  Total & status by month 
+                </p>
+              </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-500">Document type:</span>
-              <Select
-                size="small"
-                value={docType}
-                onChange={(value) => setDocType(value as DocType)}
-                style={{ width: 140 }}
-              >
-                <Option value="forecast">Forecast</Option>
-                <Option value="order">Order</Option>
-                <Option value="invoice">Invoice</Option>
-              </Select>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-500">Document type:</span>
+                <Select
+                  size="small"
+                  value={docType}
+                  onChange={(value) => setDocType(value as DocType)}
+                  style={{ width: 140 }}
+                >
+                  <Option value="forecast">Forecast</Option>
+                  <Option value="order">Order</Option>
+                  <Option value="invoice">Invoice</Option>
+                </Select>
+              </div>
             </div>
-          </div>
 
           <div className="h-72">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={monthlyData}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="month" tick={{ fontSize: 12 }} />
+                <defs>
+                  <linearGradient id="colorNew" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={1}/>
+                    <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <linearGradient id="colorConfirm" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#38bdf8" stopOpacity={1}/>
+                    <stop offset="95%" stopColor="#38bdf8" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <linearGradient id="colorReject" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ef4444" stopOpacity={1}/>
+                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <linearGradient id="colorApproved" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={1}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.3}/>
+                  </linearGradient>
+                  <linearGradient id="colorChange" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ff9f1c" stopOpacity={1}/>
+                    <stop offset="95%" stopColor="#ff9f1c" stopOpacity={0.3}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
+                <XAxis dataKey="month" tick={{ fontSize: 12 }} stroke="#94a3b8" />
                 <YAxis
                   yAxisId="left"
                   tick={{ fontSize: 12 }}
@@ -315,80 +358,84 @@ export default function GraphData() {
                     borderRadius: 12,
                     borderColor: "#e2e8f0",
                     fontSize: 12,
+                    backgroundColor: "#ffffff",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                   }}
+                  cursor={{ fill: "rgba(15, 23, 42, 0.05)" }}
                 />
-                <Legend wrapperStyle={{ fontSize: 11 }} />
-
-                {/* Total */}
-                <Bar
-                  yAxisId="left"
-                  dataKey="total"
-                  name="Total"
-                  barSize={20}
-                  fill="#e2e8f0"
-                  radius={[6, 6, 0, 0]}
+                <Legend 
+                  wrapperStyle={{ fontSize: 12, paddingTop: 16 }}
+                  verticalAlign="bottom"
+                  height={36}
                 />
 
-                {/* Stack by status */}
+                {/* Status bars - separate, not stacked */}
                 <Bar
                   yAxisId="left"
                   dataKey="newCount"
                   name="New"
-                  stackId="status"
-                  barSize={16}
-                  fill="#fbbf24"
-                  radius={[6, 6, 0, 0]}
+                  barSize={14}
+                  fill="url(#colorNew)"
+                  radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   yAxisId="left"
                   dataKey="confirmCount"
                   name="Confirm"
-                  stackId="status"
-                  barSize={16}
-                  fill="#38bdf8"
+                  barSize={14}
+                  fill="url(#colorConfirm)"
+                  radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   yAxisId="left"
                   dataKey="rejectCount"
                   name="Reject"
-                  stackId="status"
-                  barSize={16}
-                  fill="#f97373"
+                  barSize={14}
+                  fill="url(#colorReject)"
+                  radius={[4, 4, 0, 0]}
                 />
                 <Bar
                   yAxisId="left"
                   dataKey="approvedCount"
                   name="Approved"
-                  stackId="status"
-                  barSize={16}
-                  fill="#a855f7"
+                  barSize={14}
+                  fill="url(#colorApproved)"
+                  radius={[4, 4, 0, 0]}
                 />
 
-                {/* เส้น avg (ตอนนี้ยังเป็น 0 ทั้งหมด แต่เผื่ออนาคต) */}
-                <Line
-                  yAxisId="right"
-                  type="monotone"
-                  dataKey="avgConfirmationHours"
-                  name="Avg Confirm Time (hrs)"
-                  stroke="#16a34a"
-                  strokeWidth={2}
-                  dot={{ r: 3 }}
-                  activeDot={{ r: 5 }}
+                {/* Change bar - positive green, negative red */}
+                <Bar
+                  yAxisId="left"
+                  dataKey="changeCount"
+                  name="Change"
+                  barSize={14}
+                  fill="url(#colorChange)"
+                  radius={[4, 4, 0, 0]}   
+                />
+            
+
+                {/* Total - background reference bar (rightmost) */}
+                <Bar
+                  yAxisId="left"
+                  dataKey="total"
+                  name="Total"
+                  barSize={16}
+                  fill="#1f2937"
+                  radius={[4, 4, 0, 0]}
+                  opacity={1}
                 />
               </ComposedChart>
             </ResponsiveContainer>
+          </div>
           </div>
         </div>
 
         {/* Status breakdown card (ยังเป็นรวมทุก doc เหมือนเดิม) */}
         <div className="rounded-2xl border card-root p-4 shadow-sm">
-          <p className="text-sm font-medium text-root">
+          <p className="text-sm pb-2 font-medium text-root">
             Status Breakdown (All Documents)
           </p>
-          <p className="mb-3 text-xs text-slate-500">
-            from /get-status-total-summary
-          </p>
-
+      
           <div className="space-y-3">
             <StatusRow
               label="New"
@@ -406,6 +453,11 @@ export default function GraphData() {
               colorClass="bg-rose-100 text-rose-700"
             />
             <StatusRow
+              label="Change"
+              value={totalChange}
+              colorClass="bg-orange-100 text-orange-700"
+            />
+            <StatusRow
               label="Approved"
               value={totalApproved}
               colorClass="bg-indigo-100 text-indigo-700"
@@ -420,6 +472,8 @@ export default function GraphData() {
           </div>
         </div>
       </div>
+
+  
     </div>
   );
 }

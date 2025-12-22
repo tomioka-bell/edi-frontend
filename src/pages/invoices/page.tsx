@@ -16,7 +16,8 @@ import InvoiceModalAdd from "./invoice-modal-add";
 import { buildImageURL } from "../../utils/get-image";
 import { downloadFile } from "../../utils/download-file";
 import { Modal, Select, DatePicker } from "antd";
-import { useUser } from "../../contexts/UserContext";
+import dayjs from "dayjs";
+import { useUser } from "../../contexts/useUserHook";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import StatusSummaryData from "./status-summary-data";
 import apiBaseClient from "../../utils/api-base-client";
@@ -363,6 +364,7 @@ export default function InvoicesPage() {
               <div className="flex items-center gap-2">
                 <label className="text-sm font-medium text-gray-700">Period:</label>
                 <DatePicker.RangePicker
+                  key={`daterange-${dateRange[0]}-${dateRange[1]}`}
                   placeholder={["From", "To"]}
                   onChange={(dates) => {
                     if (dates && dates[0] && dates[1]) {
@@ -371,6 +373,7 @@ export default function InvoicesPage() {
                       setDateRange([null, null]);
                     }
                   }}
+                  value={dateRange[0] && dateRange[1] ? [dayjs(dateRange[0]), dayjs(dateRange[1])] : null}
                   style={{ width: 280 }}
                 />
               </div>
